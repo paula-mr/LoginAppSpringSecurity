@@ -1,9 +1,17 @@
 package com.security.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
@@ -14,5 +22,18 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
 		http.csrf().disable().authorizeRequests().antMatchers("/", "/index", "/css/*", "/js/*").permitAll().anyRequest()
 				.authenticated().and().httpBasic();
 	}
+
+	@SuppressWarnings("deprecation")
+	@Bean
+	@Override
+	public UserDetailsService userDetailsService() {
+		List<UserDetails> users = new ArrayList<>();
+		users.add(User.withDefaultPasswordEncoder().username("maria").password("password").roles("USER", "ADMIN").build());
+		users.add(User.withDefaultPasswordEncoder().username("joao").password("12345").roles("USER").build());
+		
+		return new InMemoryUserDetailsManager(users);
+	}
+	
+	
 
 }
