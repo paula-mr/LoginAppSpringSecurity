@@ -23,4 +23,12 @@
 hs_err_pid*
 
 # bin folder 
-*/bin/
+**/bin/
+
+# target folder
+**/target/
+
+# generated files
+**/.classpath
+**/.project
+**/.settings/
